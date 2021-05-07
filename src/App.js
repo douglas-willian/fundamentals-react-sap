@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { FormInput } from 'fundamental-react/lib/Forms';
+import { Button } from 'fundamental-react/lib/Button';
+import { Table } from 'fundamental-react/lib/Table';
+import database from './database'
+import searchOrder from './searchOrder'
 
 function App() {
+  const [item, setItem] = useState();
+  let [tableItems, setTableItems] = useState([{ rowData: [] }]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <FormInput
+        placeholder='N° Pedido'
+        onChange={(e) => {
+          setItem(e.target.value);
+        }}
+      />
+
+      <Button
+        onClick={() => {
+          setTableItems(searchOrder(database, item));
+        }}
+      >
+        Pesquisar
+      </Button>
+      <div>
+        <br></br>
+        <Table compact headers={Object.keys(database[0])} tableData={tableItems} />
+      </div>
     </div>
   );
 }
